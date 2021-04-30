@@ -12,7 +12,7 @@
 
 (define nmbs% (class object%
                 (define gui (new gui% [frame-width 900][frame-height 600][main-spacing 50]))
-                (define-values (in out) (tcp-connect "127.0.0.1" 9000))
+                (define-values (in out) (tcp-connect "localhost" 9000))
                 (define-values (a b)(tcp-addresses in))
                 (define-values (c d)(tcp-addresses out))
                 (displayln a)
