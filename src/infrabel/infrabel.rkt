@@ -7,7 +7,7 @@
 (require "../railway_objects/segment_checks.rkt")
 (require (prefix-in sim: "../simulator/interface.rkt"))
 (require (prefix-in hw: "../hardware-library/interface.rkt"))
-(require "../TCP/help-procs.rkt")
+(require "../tcp/help-procs.rkt")
 
 
 (provide infrabel% infrabel?)
