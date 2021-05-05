@@ -16,10 +16,6 @@
                     (init-field hardware-active)
                     (define server (tcp-listen 9000))
                     (define-values (in out)(tcp-accept server))
-                    (define-values (a b)(tcp-addresses in))
-                    (define-values (c d)(tcp-addresses out))
-                    (displayln a)(displayln b)(displayln c)
-                    (displayln d)
                     (define railway (new railway%))
                   
                     ;; abstractions for hardware/simulator procedures, will be set!'ed to the appropiate

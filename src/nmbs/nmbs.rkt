@@ -12,13 +12,7 @@
 
 (define nmbs% (class object%
                 (define gui (new gui% [frame-width 900][frame-height 600][main-spacing 50]))
-                (define-values (in out) (tcp-connect "10.244.7.66" 9000))
-                (define-values (a b)(tcp-addresses in))
-                (define-values (c d)(tcp-addresses out))
-                (displayln a)
-                (displayln b)
-                (displayln c)
-                (displayln d)
+                (define-values (in out) (tcp-connect "134.184.232.4" 9000))
                 (define railway (make-object railway%))
                 (define paths (make-hash))
                 (define update #f)
