@@ -12,7 +12,7 @@
 
 (define nmbs% (class object%
                 (define gui (new gui% [frame-width 900][frame-height 600][main-spacing 50]))
-                (define-values (in out) (tcp-connect "134.184.232.4" 9000))
+                (define-values (in out) (tcp-connect "raspberrypi" 9000))
                 (define railway (make-object railway%))
                 (define paths (make-hash))
                 (define update #f)
