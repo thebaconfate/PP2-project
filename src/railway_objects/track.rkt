@@ -14,7 +14,7 @@
                  (define/public (track-links) links)
 
                  ;; updates the linked tracks with a new vector containing the new links, expects a list
-                 (define/public (set-links list-of-new-links)
+                 (define/public (set-links! list-of-new-links)
                    (set! links (list->vector list-of-new-links)))
 
                  ;; uses a proc on each element of the vector containing the links

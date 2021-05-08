@@ -624,7 +624,7 @@
                                  (unless (zero? (send loco-obj get-speed))
                                    (if (get-loco-detection-block loco-id)
                                        (begin
-                                         (cancel-reservations! (send loco-obj make-reservations!))
+                                         (cancel-reservations! (send loco-obj made-reservations?))
                                          (set-speed-loco-obj! (send railway get-locomotive loco-id) new-speed)
                                          (send-message out (list 'add-log! "Set speed of "
                                                                  (symbol->string loco-id)

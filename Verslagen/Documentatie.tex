@@ -1,0 +1,114 @@
+\documentclass{article}
+\usepackage{vub}
+\usepackage[utf8]{inputenc}
+\usepackage[dutch]{babel}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\title{Programmeerproject 2}
+\subtitle{Documentatie fase 3}
+\definecolor{myblueish}{rgb}{0.36, 0.54, 0.66}
+\faculty{Sciences and Bio-Engineering Sciences} % Note: without the word "Faculty"!
+\author{Gérard Lichterttt\\
+        \textcolor{blue}{gerard.Lichtert@vub.be}\\
+        \textcolor{myblueish}{0557513}}
+\date{\today}
+\begin{document}
+\maketitle
+\tableofcontents
+\pagebreak
+\section{Inleiding}
+Dit document bevat het verslag van fase 3 van het vak "Programmeerproject 2". Het behandelt 
+de eerste functionele vereisten en de 3 uigebreide vereisten. 
+Vervolgens zal het over de gebruikte datastructuren gaan en het afhankelijkheids diagram. 
+Deze datastructuren zullen er voor zorgen dat alle functionaliteiten werken en vanuit 
+de GUI aangeroepen kunnen worden. Verder staat in dit verslag een beschrijving van de API tussen
+de infrabel- en NMBS-component, de planning en het logboek. 
+\section{Functionele vereisten}
+In dit verslag worden de functionele vereisten per fase besproken. In de eerste fase werd de 
+GUI gemaakt alsook de command and control. De code van de command en control moeten we zelf
+niet schrijven maar de code die de hardware aanstuurt wel. De code moet locomotieven kunnen laten
+starten en stoppen, hun snelheid en rijrichting aflezen en veranderen. Verder moeten we ook de 
+de stand van de wissels kunnen uitlezen en verzetten. Via de detectieblokkken detecteren we waar 
+een trein zich bevindt. \\
+De GUI laat de eindgebruiker de toestand van het spoornetwerk en de locomotieven zien. Het laat 
+ook interactie toe met de wissels en locomotieven. \\
+In de tweede fase was het de bedoeling dat we de eerste twee uitgebreide vereisten implementeren. Voor dit project werd 
+gekozen voor botsingpreventie aan de hand van een reservatie en bezettingsysteem. Dit zal ervoor zorgen dat een trein zijn snelheid 
+op nul gezet wordt als het pad dat die gaat afleggen al gereserveerd of bezet is. Aangezien de stand van de wissels op eender welk moment gewijzigd kan worden, worden
+er veel spoorsegmenten gereserveerd tot de aanliggende detectieblokken. Dit is wel met de voorwaarde dat ze op het pad zijn van de richting van de trein. Een andere
+uitgebreide vereiste waar voor gekozen werd is het automatisch trajectbeheer. De manier waarop dit geimplementeerd is dat de eindbestemming ingevoerd wordt en het pad berekend
+word. Dit wordt slechts gedaan als de trein detecteerbaar is. Anders zal het pad nog eens herberekend worden wanneer die detecteerbaar is. Er wordt bij het trajectbeheer
+ook rekening gehouden met het reservatiesysteem om botsingen te voorkomen. \\
+In de 3e fase is het de bedoeling dat we de laatste uitgebreide vereiste implementeren. Bij dit project is dit de Raspberry Pi vereiste. Dit houdt in dat het mogelijk
+moet zijn om infrabel te runnen op de Raspberry Pi en NMBS op de computer. Dit wordt behaald door het externe IP adres (of lokaal) mee te geven bij het aanmaken van het NMBS object.
+\pagebreak
+\section{ADT's}
+\subsection{Track ADT}
+Het track ADT houdt bij welke spoorsegmenten verbonden zijn. Het houdt ook bij of het spoorsegment al dan niet
+gereserveerd is. De reservatiestand kan ook aangepast worden. 
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{2.9cm}|}{\textbf{Naam}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{4cm}|}{\textbf{Signatuur}} 
+                   & \multicolumn{1}{>{\centering\arraybackslash}p{6.1cm}|}{\textbf{Beschrijving}}\\
+                \hline
+                new & (symbol, list $\rightarrow$ track\%) & Maakt een track object aan. Verwacht
+                de ID van het spoorsegment en een lijst met de ID's van de verbonden spoorsegmenten.\\
+                \hline
+                get-track-id & (/ $\rightarrow$ symbol) & Geeft de ID van het spoorsegment terug.\\
+                \hline
+                track-links & (/ $\rightarrow$ vector) & Geeft de vector terug met de ID's van de verbonden spoorsegmenten.\\
+                \hline
+                set-links! & (list $\rightarrow$ /) & verandert de verbonden spoorsegmenten.\\
+                \hline
+                links-map & ((symbol $\rightarrow$ any) $\rightarrow$ vector) & Voert een procedure uit op de ID's van de verbonden spoorsegmenten en geeft de opgespannen vector terug.\\
+                \hline
+                reserved? & (/ $\rightarrow$ symbol $\cup$ false) & Geeft de ID van de locomotief die het spoorsegment gereserveerd heeft of false.\\
+                \hline
+                reserve! & (symbol $\rightarrow$ /) & Verandert de reservatiestatus naar het meegegeven ID.\\
+                \hline
+                cancel-reservation! & (/ $\rightarrow$ /) & Zet het reservatiestatus op false\\
+                \hline
+                links-map! & ((symbol $\rightarrow$ any) $\rightarrow$ /) & Voert destructuef een procedure uit op de ID's van de verbonden spoorsegmenten en verandert de vector naar de opgespannen vector terug.\\
+                \hline
+                nr-of-links & (/ $\rightarrow$ integer) & geeft het aantal verbonden spoorsegmenten terug\\     
+                \hline
+        \end{tabular}
+        \caption{Signaturen van track\%}            
+\end{table}
+\subsection{toelichting}
+Het track ADT is eigenlijk een superclasse van de volgende ADT's. Dit is zodat de volgende ADT's de methoden erven van het track ADT. New maakt een nieuwe track ADT aan. 
+Dit kan ook vervangen worden door (make-object track\% \textless \space argumenten \textgreater). $get-track-id$ dient om de ID op te vragen. $track-links$ dient om de vector met verbonden
+spoorsegmenten op te vragen. $set-links!$ wijzigt de verbonden spoorsegmenten. $links-map$ voert een procedure uit op de vector-elementen. 
+$reserved?$ geeft of de ID van het locomotief terug die het spoorsegment gereserveerd heeft of false wanneer 
+\subsection{ADT switch}
+Dit bevat alle informatie omtrent het ADT switch. Dit houdt de stand van
+de wissels bij, laat toe om deze stand te wijzigen en doet laat hetzelfde\\
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|c|c|c|}
+                \hline
+                Naam & Signatuur & Beschrijving\\
+                \hline 
+                new & t5 & t6\\
+                \hline
+        \end{tabular}
+        \caption{banaan}
+\end{table}
+\subsection{ADT detection block}
+
+\subsection{ADT locomotive}
+
+\subsection{ADT railway}
+\subsection{ADT infrabel}
+\subsection{ADT gui}
+\subsection{ADT nmbs}
+\section{Afhankelijkheids diagram}
+\section{Beschrijving van API tussen infrabel- en NMBS-component}
+\section{Planning}
+\section{Logboek}
+\end{document}
+ 
