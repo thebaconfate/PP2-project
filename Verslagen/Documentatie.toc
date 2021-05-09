@@ -3,15 +3,22 @@
 \contentsline {section}{\numberline {2}Functionele vereisten}{2}{}%
 \contentsline {section}{\numberline {3}ADT's}{3}{}%
 \contentsline {subsection}{\numberline {3.1}Track ADT}{3}{}%
-\contentsline {subsection}{\numberline {3.2}toelichting}{3}{}%
-\contentsline {subsection}{\numberline {3.3}ADT switch}{3}{}%
-\contentsline {subsection}{\numberline {3.4}ADT detection block}{4}{}%
-\contentsline {subsection}{\numberline {3.5}ADT locomotive}{4}{}%
-\contentsline {subsection}{\numberline {3.6}ADT railway}{4}{}%
-\contentsline {subsection}{\numberline {3.7}ADT infrabel}{4}{}%
-\contentsline {subsection}{\numberline {3.8}ADT gui}{4}{}%
-\contentsline {subsection}{\numberline {3.9}ADT nmbs}{4}{}%
-\contentsline {section}{\numberline {4}Afhankelijkheids diagram}{4}{}%
-\contentsline {section}{\numberline {5}Beschrijving van API tussen infrabel- en NMBS-component}{4}{}%
-\contentsline {section}{\numberline {6}Planning}{4}{}%
-\contentsline {section}{\numberline {7}Logboek}{4}{}%
+\contentsline {subsubsection}{\numberline {3.1.1}Toelichting}{3}{}%
+\contentsline {subsection}{\numberline {3.2}Switch ADT}{3}{}%
+\contentsline {subsubsection}{\numberline {3.2.1}Toelichting}{4}{}%
+\contentsline {subsection}{\numberline {3.3}Dblock ADT}{4}{}%
+\contentsline {subsubsection}{\numberline {3.3.1}Toelichting}{4}{}%
+\contentsline {subsection}{\numberline {3.4}Locomotive ADT}{5}{}%
+\contentsline {subsubsection}{\numberline {3.4.1}Toelichting}{5}{}%
+\contentsline {subsection}{\numberline {3.5}Railway ADT}{5}{}%
+\contentsline {subsubsection}{\numberline {3.5.1}Toelichting}{5}{}%
+\contentsline {subsection}{\numberline {3.6}Infrabel ADT}{5}{}%
+\contentsline {subsubsection}{\numberline {3.6.1}Toelichting}{5}{}%
+\contentsline {subsection}{\numberline {3.7}Gui ADT}{5}{}%
+\contentsline {subsubsection}{\numberline {3.7.1}Toelichting}{5}{}%
+\contentsline {subsection}{\numberline {3.8}NMBS ADT}{5}{}%
+\contentsline {subsubsection}{\numberline {3.8.1}Toelichting}{5}{}%
+\contentsline {section}{\numberline {4}Afhankelijkheids diagram}{5}{}%
+\contentsline {section}{\numberline {5}Beschrijving van API tussen infrabel- en NMBS-component}{5}{}%
+\contentsline {section}{\numberline {6}Planning}{5}{}%
+\contentsline {section}{\numberline {7}Logboek}{5}{}%

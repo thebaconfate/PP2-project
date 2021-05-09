@@ -32,10 +32,6 @@
                  (define/public (cancel-reservation!)
                    (set! reserved #f))
 
-                 ;; destructively uses a proc on each element of the vector containing the links
-                 (define/public (links-map! proc)
-                   (vector-map! proc links))
-
                  (define/public (nr-of-links)
                    (vector-length links))
 

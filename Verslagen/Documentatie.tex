@@ -62,7 +62,7 @@ gereserveerd is. De reservatiestand kan ook aangepast worden.
                 \hline
                 track-links & (/ $\rightarrow$ vector) & Geeft de vector terug met de ID's van de verbonden spoorsegmenten.\\
                 \hline
-                set-links! & (list $\rightarrow$ /) & verandert de verbonden spoorsegmenten.\\
+                set-links! & (list $\rightarrow$ /) & Verandert de verbonden spoorsegmenten.\\
                 \hline
                 links-map & ((symbol $\rightarrow$ any) $\rightarrow$ vector) & Voert een procedure uit op de ID's van de verbonden spoorsegmenten en geeft de opgespannen vector terug.\\
                 \hline
@@ -72,40 +72,112 @@ gereserveerd is. De reservatiestand kan ook aangepast worden.
                 \hline
                 cancel-reservation! & (/ $\rightarrow$ /) & Zet het reservatiestatus op false\\
                 \hline
-                links-map! & ((symbol $\rightarrow$ any) $\rightarrow$ /) & Voert destructuef een procedure uit op de ID's van de verbonden spoorsegmenten en verandert de vector naar de opgespannen vector terug.\\
-                \hline
-                nr-of-links & (/ $\rightarrow$ integer) & geeft het aantal verbonden spoorsegmenten terug\\     
+                nr-of-links & (/ $\rightarrow$ integer) & Geeft het aantal verbonden spoorsegmenten terug\\     
                 \hline
         \end{tabular}
         \caption{Signaturen van track\%}            
 \end{table}
-\subsection{toelichting}
+\subsubsection{Toelichting}
 Het track ADT is eigenlijk een superclasse van de volgende ADT's. Dit is zodat de volgende ADT's de methoden erven van het track ADT. New maakt een nieuwe track ADT aan. 
 Dit kan ook vervangen worden door (make-object track\% \textless \space argumenten \textgreater). $get-track-id$ dient om de ID op te vragen. $track-links$ dient om de vector met verbonden
 spoorsegmenten op te vragen. $set-links!$ wijzigt de verbonden spoorsegmenten. $links-map$ voert een procedure uit op de vector-elementen. 
-$reserved?$ geeft of de ID van het locomotief terug die het spoorsegment gereserveerd heeft of false wanneer 
-\subsection{ADT switch}
-Dit bevat alle informatie omtrent het ADT switch. Dit houdt de stand van
-de wissels bij, laat toe om deze stand te wijzigen en doet laat hetzelfde\\
+$reserved?$ geeft of de ID van het locomotief terug die het spoorsegment gereserveerd heeft of false. $cancel-reservation!$ zet de reservatiestand naar false. 
+$nr-of-links$ geeft het aantal verbindingen terug. Classen zoals switch en detectieblokken zullen de methoden erven van deze classe. 
+\subsection{Switch ADT}
+Het switch ADT erft de methoden van het Track ADT. Het zal dus bovenop de onderstaande
+methoden ook de methoden van het Track ADT bevatten. Het switch ADT houdt de 
+stand van een wissel bij, welk spoorsegment verbonden is met de huidige stand en 
+het staat toe om de stand te veranderen. \\
 \begin{table}[h!]
         \centering
-        \begin{tabular}{|c|c|c|}
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
                 \hline
-                Naam & Signatuur & Beschrijving\\
+                \multicolumn{1}{|>{\centering\arraybackslash}p{2.9cm}|}{\textbf{Naam}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{4cm}|}{\textbf{Signatuur}} 
+                   & \multicolumn{1}{>{\centering\arraybackslash}p{6.1cm}|}{\textbf{Beschrijving}}\\
                 \hline 
-                new & t5 & t6\\
+                new & (symbol, list $\rightarrow$ switch\%) & Maakt een nieuwe switch object aan\\
+                \hline
+                get-status & (/ $\rightarrow$ integer) & Geeft de stand van de wissel terug. \\
+                \hline
+                set-status! & (integer $\rightarrow$ integer) & Veranert de stand van de wissel.  \\
+                \hline
+                get-merge-track & (/ $\rightarrow$ symbol) & Geeft de ID van het spoorsegment die niet met de stand
+                van de wissels verandert. \\
+                \hline
+                get-linked-track & (/ $\rightarrow$ symbol) & Geeft de ID van het spoorsegment die verbonden is met de stand
+                van de wissel. \\
                 \hline
         \end{tabular}
-        \caption{banaan}
+        \caption{Signaturen van switch\%}
 \end{table}
-\subsection{ADT detection block}
-
-\subsection{ADT locomotive}
-
-\subsection{ADT railway}
-\subsection{ADT infrabel}
-\subsection{ADT gui}
-\subsection{ADT nmbs}
+\subsubsection{Toelichting}
+Het switch ADT is een subclasse van het track ADT. Het kan dus dezelfde methoden gebruik als het track ADT. De extra
+methoden zijn $new$ dat dezelfde argumenten verwacht als het track ADT (De ID van het spoorsegment en een lijst met de ID's van
+de verbonden spoorsegmenten.) Let op!: Zet de ID op de juste index in de lijst. Als de stand van een wissel 1 is en het verbindt
+met het spoorsegment 1-5, dan zou de lijst '(U-1 1-5 ... etc...) moeten zijn. Dit is zodat de interne index van de stand van de wissels analoog is aan
+de stand van de wissels van de hardware. $get-status$ geeft de stand van de wissel terug als een nummer. 
+$set-status!$ verandert de stand van de wissel naar het gegeven stand.
+Zorg er wel voor dat de index correct overeenkomt omdat het afleest van de vector
+die de verbonden spoorsegmenten bijhoudt. $get-merge-track$ geeft de ID van het spoorsegment die niet met de stand
+van de wissel verandert. $get-linked-track$ geeft de ID terug van de huidige verbonden spoorsegment aan de hand van de stand
+van de wissel. 
+\subsection{Dblock ADT}
+Het detection block ADT is een subclasse van het track ADT. Het erft dus net zoals
+het switch ADT de methoden van het track ADT. Bovendien houdt het ook bij of dat 
+er zich een locomotief op bevindt. 
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{2.9cm}|}{\textbf{Naam}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{4cm}|}{\textbf{Signatuur}} 
+                   & \multicolumn{1}{>{\centering\arraybackslash}p{6.1cm}|}{\textbf{Beschrijving}}\\
+                \hline 
+                new & (symbol, list $\rightarrow$ dblock\%) & Maakt een nieuw detectie block object aan.\\
+                \hline
+                occupied? & (/ $\rightarrow$ symbol $\cup$ false) & Geeft ID van de locomotief terug die momenteel 
+                de detectieblok bezet. \\
+                \hline
+                occupy! & (symbol $\rightarrow$ /) & Bezet de detectieblok met het gegeven ID.\\
+                \hline
+                vacant! & (/ $\rightarrow$ /) & Maakt de detectiblok vrij. \\
+                \hline
+        \end{tabular}
+        \caption{Signaturen van dblock\%}
+\end{table}
+\subsubsection{Toelichting}
+De methoden die bruikbaar zijn voor het detectieblok ADT zijn de methoden die het ADT erft van het track ADT. 
+Dit is ook niet zonder de hierboven genoemde methoden die het arsenaal vervullen. $new$ maakt een nieuwe
+detectieblok object aan. Het verwacht dezelfde argumenten zoals $new$ van het track ADT. $occupied?$ geeft de ID van de locomotief die
+het detectieblok bezet of false indien die niet bezet is. $occupy!$ bezet het detectieblok met het gegeven ID van een locomotief. 
+$vacant!$ zal er voor zorgen dat het detectieblok terug vrij is. 
+\subsection{Locomotive ADT}
+Het locomotief ADT houdt de interne data van een locomotief bij zoals snelheid, richting, vorige locatie, huidige locatie, manuele modus,
+het pad en de eindbestemming. Dit komt natuurlijk ook met methoden om ze te veranderen. 
+Het pad en eindbestemming wordt gebruikt voor het automatisch trajectbeheer. 
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{2.9cm}|}{\textbf{Naam}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{4cm}|}{\textbf{Signatuur}} 
+                   & \multicolumn{1}{>{\centering\arraybackslash}p{6.1cm}|}{\textbf{Beschrijving}}\\
+                \hline 
+                new & (symbol, symbol, symbol, symbol $\rightarrow$ locomotive\%) & Maakt een nieuw lovomotief object aan.\\
+                \hline
+        \end{tabular}
+        \caption{Signaturen van locomotive\%}
+\end{table}
+\subsubsection{Toelichting}
+\subsection{Railway ADT}
+\subsubsection{Toelichting}
+\subsection{Infrabel ADT}
+\subsubsection{Toelichting}
+\subsection{Gui ADT}
+\subsubsection{Toelichting}
+\subsection{NMBS ADT}
+\subsubsection{Toelichting}
 \section{Afhankelijkheids diagram}
 \section{Beschrijving van API tussen infrabel- en NMBS-component}
 \section{Planning}

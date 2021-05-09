@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.3) (preloaded format=pdflatex 2021.3.21)  7 MAY 2021 20:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.3) (preloaded format=pdflatex 2021.3.21)  9 MAY 2021 05:14
 entering extended mode
 **c:/Users/gerar/OneDrive/Documents/VUB/2BA/Programmeerproject-2/Verslagen/Documentatie.tex
 (c:/Users/gerar/OneDrive/Documents/VUB/2BA/Programmeerproject-2/Verslagen/Documentatie.tex
@@ -486,34 +486,34 @@ File: t1qag.fd 2009/09/25 v1.2 font definition file for T1/qag
  [1
 
 ] [2]
-LaTeX Font Info:    Trying to load font information for OML+cmr on input line 84.
+LaTeX Font Info:    Trying to load font information for OML+cmr on input line 82.
  (C:\Users\gerar\AppData\Local\Programs\MiKTeX\tex/latex/base\omlcmr.fd
 File: omlcmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 84.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 82.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-Overfull \hbox (20.8558pt too wide) in paragraph at lines 110--110
+[3] [4]
+Overfull \hbox (20.8558pt too wide) in paragraph at lines 182--182
 []\OT1/cmr/bx/n/14.4 Beschrijving van API tus-sen infrabel- en NMBS-component 
  []
 
-[3] [4] (c:/Users\gerar\OneDrive\Documents\VUB\2BA\Programmeerproject-2\Verslagen\Documentatie.aux) ) 
+[5] (c:/Users\gerar\OneDrive\Documents\VUB\2BA\Programmeerproject-2\Verslagen\Documentatie.aux) ) 
 Here is how much of TeX's memory you used:
  14473 strings out of 479324
  289777 string characters out of 2856815
- 585694 words of memory out of 3000000
+ 588693 words of memory out of 3000000
  31656 multiletter control sequences out of 15000+600000
  420948 words of font info for 38 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  128i,12n,130p,521b,438s stack positions out of 5000i,500n,10000p,200000b,80000s
 {C:/Users/gerar/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/tex-gyre/q-ec.enc}<C:/Users/gerar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/gerar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/gerar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/gerar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/gerar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/gerar/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qagb.pfb><C:/Users/gerar/AppData/Local/Programs/MiKTeX/fonts/type1/public/tex-gyre/qagr.pfb>
-Output written on c:/Users\gerar\OneDrive\Documents\VUB\2BA\Programmeerproject-2\Verslagen\Documentatie.pdf (5 pages, 170803 bytes).
+Output written on c:/Users\gerar\OneDrive\Documents\VUB\2BA\Programmeerproject-2\Verslagen\Documentatie.pdf (6 pages, 176960 bytes).
 PDF statistics:
- 55 PDF objects out of 1000 (max. 8388607)
+ 58 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  18 words of extra memory for PDF output out of 10000 (max. 10000000)
 
