@@ -8,7 +8,7 @@
 \title{Programmeerproject 2}
 \subtitle{Documentatie fase 3}
 \definecolor{myblueish}{rgb}{0.36, 0.54, 0.66}
-\faculty{Sciences and Bio-Engineering Sciences} % Note: without the word "Faculty"!
+\faculty{Sciences and Bio-Engineering Sciences}
 \author{Gérard Lichterttt\\
         \textcolor{blue}{gerard.Lichtert@vub.be}\\
         \textcolor{myblueish}{0557513}}
@@ -141,6 +141,130 @@ er zich een locomotief op bevindt.
                 \hline
                 occupy! & (symbol $\rightarrow$ /) & Bezet de detectieblok met het gegeven ID.\\
                 \hline
+                vacant! & (/ $\rightarrow$ /) & Maakt de detectieblok vrij. \\
+                \hline
+        \end{tabular}
+        \caption{Signaturen van dblock\%}
+\end{table}
+\subsubsection{Toelichting}
+De methoden die bruikbaar zijn voor het detectieblok ADT zijn de methoden die het ADT erft van het track ADT. 
+Dit is ook niet zonder de hierboven genoemde methoden die het arsenaal vervullen. $new$ maakt een nieuwe
+detectieblok object aan. Het verwacht dezelfde argumenten zoals $new$ van het track ADT. $occupied?$ geeft de ID van de locomotief die
+het detectieblok bezet of false indien die niet bezet is. $occupy!$ bezet het detectieblok met het gegeven ID van een locomotief. 
+$vacant!$ zal er voor zorgen dat het detectieblok terug vrij is. 
+\subsection{Locomotive ADT}
+Het locomotief ADT houdt de interne data van een locomotief bij zoals snelheid, richting, vorige locatie, huidige locatie, manuele modus,
+het pad en de eindbestemming. Dit komt natuurlijk ook met methoden om ze te veranderen. 
+Het pad en eindbestemming wordt gebruikt voor het automatisch trajectbeheer. 
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{2.9cm}|}{\textbf{Naam}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{4cm}|}{\textbf{Signatuur}} 
+                   & \multicolumn{1}{>{\centering\arraybackslash}p{6.1cm}|}{\textbf{Beschrijving}}\\
+                \hline 
+                new & (symbol, symbol, symbol, symbol $\rightarrow$ locomotive\%) & Maakt een nieuw lovomotief object aan.\\
+                \hline
+                reserve! & (list $\rightarrow$ /) & Slaat een lijst van ID's van spoorsegmenten op die de locomotief gereserveerd heeft.\\
+                \hline
+                clear-reservations! & (/ $\rightarrow$ /) & Verwijdert de lijst van reservaties. \\
+                \hline
+                made-reservations? & (/ $\rightarrow$ list $\cup$ false) & Geeft een lijst van ID's van de gereserveerde spoorsegmenten terug.\\
+                \hline
+                manual-override & (boolean $\rightarrow$ /) & Wijzigt de reservatieprotocol van de locomotief.\\
+                \hline
+                manual? & (/ $\rightarrow$ boolean) & Geeft het reservatieprotocol terug van de locomotief. \\
+                \hline
+                get-loco-id & (/ $\rightarrow$ symbol) & Geeft de ID van de locomotief terug. \\
+                \hline
+        \end{tabular}
+        \caption{Signaturen van locomotive\%}
+\end{table}
+\subsubsection{Toelichting}
+$new$ maakt een nieuw locomotief object aan. Het neemt als eerste de ID van de locomotief, de richting van de locomotief, de huidige locatie en de vorige locatie. 
+$reserve!$ verwacht een lijst van ID's van spoorsegmenten die de locomotief gereserveerd heeft. $clear-reservations!$ verwijdert de lijst van ID's van de gereserveerde
+spoorsegmenten. De waarde hiervan verandert naar $false$. $made-reservations?$ geeft of de lijst terug van de van de ID's van de gereserveerde spoorsegmenten of $false$ indien de 
+locomotief geen spoorsegmenten gereserveerd heeft.
+$manual-override$ zal dienen om de status van de manier van het reservatiesysteem te veranderen. Wanneer de status $true$ is zal het de bezetting van een detectieblok negeren, 
+dit zal vooral dienen om naar dichtbijzijnde detectieblokken te kunnen navigeren zonder rekening te houden met locomotieven die te dicht in de buurt zijn. De enige argumenten
+die dus gebruikt kunnen worden hiervoor zijn dus ook de booleans. 
+$manual?$ geeft de status van de manuele modus terug. Als laatste $get-loco-id$ geeft de ID terug van de locomotief. 
+\subsection{Railway ADT}
+Het railway ADT brengt de de spoor gerelateerde ADT's zoals het track ADT, switch ADT, het detectieblok ADT en het locomotief ADT samen. 
+Zo houdt he railway ADT het volledig spoornetwerk samen. Het netwerk zelf wordt bewaard in een graaf. Het programma maakt hierdoor gebruik van de $graph$ library. 
+Buiten een graaf van het spoornetwerk zelf bewaart het ook een graaf met detectieblokken met bogen naar die gedefinieerd zijn op vlak van bereikbaarheid. Er is bijvoorbeeld dus een boog tussen
+detectieblok 1-4 en 1-1 omdat er een pad is van deze detectieblokken die waarbij er geen andere detectieblok tussen zit en dat de trein niet van richting moet veranderen tussen deze detectieblokken (wel op de detectieblok zelf!). Op basis hiervan kunnen we dus trajecten berekenen. Hiervan en een speciale graaf die alleen de detectieblokken bevat. Dit is zodat we kunnen
+navigeren en paden kunnen berekenen aan de hand van paden tussen detectieblokken. De methoden van het Railway ADT zullen voornamelijk zoek-functionaliteiten aanbieden. 
+Een voorbeeld hiervan is als we een locomotief object willen aanspreken dan zal het dit eerst opzoeken in de hashmap waar het opgeslagen staat. Hetzelfde geldt voor het 
+aanspreken van track ADT en zijn subclassen. 
+\subsubsection{Toelichting}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{2.9cm}|}{\textbf{Naam}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{4cm}|}{\textbf{Signatuur}} 
+                   & \multicolumn{1}{>{\centering\arraybackslash}p{6.1cm}|}{\textbf{Beschrijving}}\\
+                \hline 
+                new & (symbol, symbol, symbol, symbol $\rightarrow$ locomotive\%) & Maakt een nieuw lovomotief object aan.\\
+                \hline
+                get-list-of-tracks & (/ $\rightarrow$ list) & Geeft een lijst van terug van de hashmap van alle spoorsegmenten.\\
+                \hline
+                get-track & (/ $\rightarrow$ track $\cup$ dblock $\cup$ switch) & Geeft het gezochte spoor object terug. \\
+                \hline
+                make-track & (symbol, list $\rightarrow$ track) & Maakt een track object aan.\\
+                \hline
+                make-switch & (symbol, list $\rightarrow$ switch) & Maakt een wissel object aan.\\
+                \hline
+                make-dblock & (symbol, list $\rightarrow$ dblock) & Maakt een detectieblok object aan. \\
+                \hline
+                add-track! & (track $\cup$ dblock $\cup$ switch $\rightarrow$ track $\cup$ dblock $\cup$ switch) & Voegt het spoor object toe aan het spoornetwerk.\\
+                \hline
+                remove-track! & (symbol $\rightarrow$ /) & Verwijdert het gezochte object uit het spoornetwerk. \\
+                \hline
+                update-track! & (symbol $\rightarrow$ (track $\cup$ dblock $\cup$ switch $\rightarrow$ /)) & Voert de meegegeven procedure uit op het gezochte object. \\
+                \hline
+                for-each-track & ((track $\cup$ dblock $\cup$ switch $\rightarrow$ any) $\rightarrow$ any) & Voert een procedure uit op alle spoorsegmenten \\
+                \hline
+                for-each-link &  ((track $\cup$ dblock $\cup$ switch $\rightarrow$ any), symbol $\rightarrow$ vector) & Voert een procedure uit op de aanliggende spoorsegmenten van het gezochte spoorsegment.\\   
+                \hline
+                get-railway-graph & (/ $\rightarrow$ graph) & Geeft de graaf met het spoornetwerk terug.\\
+                \hline
+                get-dblock-graph & (/ $\rightarrow$ graph) & Geeft de graaf met alleen detectieblokken terug. \\
+                \hline
+                make-locomotive & (symbol, symbol, symbol, symbol $\rightarrow$ locomotive) & Maakt een locomotief object aan aan de hand van de gegeven
+                ID, richting, huidige detectieblok en vorige detectieblok. \\
+                \hline
+                add-locomotive! & (locomotive $\rightarrow$ /) & Voegt een locomotief object toe aan het spoornetwerk.\\
+                \hline
+                remove-locomotive! & (symbol $\rightarrow$ /) & Verwijdert het gezochte locomotief object van het spoornetwerk. \\
+                \hline
+                update-locomotive! & (locomotive $\rightarrow$ /) & Verandert gegevens van een locomotief door het te vervangen met een nieuwe. \\
+                \hline
+                get-locomotive & (symbol $\rightarrow$ locomotive $\cup$ false) & Geeft het gezochte locomotief object terug of false indien deze niet bestaat. \\
+                \hline
+                for-each-loco & ((locomotive $\rightarrow$ any) $\rightarrow$ any) & Voert een procedure uit op alle locomotief objecten. \\
+                \hline
+        \end{tabular}
+        \caption{Signaturen van railway\%}
+\end{table}
+\subsection{Infrabel ADT}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{2.9cm}|}{\textbf{Naam}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{4cm}|}{\textbf{Signatuur}} 
+                   & \multicolumn{1}{>{\centering\arraybackslash}p{6.1cm}|}{\textbf{Beschrijving}}\\
+                \hline 
+                new & (symbol, list $\rightarrow$ dblock\%) & Maakt een nieuw detectie block object aan.\\
+                \hline
+                occupied? & (/ $\rightarrow$ symbol $\cup$ false) & Geeft ID van de locomotief terug die momenteel 
+                de detectieblok bezet. \\
+                \hline
+                occupy! & (symbol $\rightarrow$ /) & Bezet de detectieblok met het gegeven ID.\\
+                \hline
                 vacant! & (/ $\rightarrow$ /) & Maakt de detectiblok vrij. \\
                 \hline
         \end{tabular}
@@ -166,13 +290,14 @@ Het pad en eindbestemming wordt gebruikt voor het automatisch trajectbeheer.
                 \hline 
                 new & (symbol, symbol, symbol, symbol $\rightarrow$ locomotive\%) & Maakt een nieuw lovomotief object aan.\\
                 \hline
+                
+
+
+
+
         \end{tabular}
-        \caption{Signaturen van locomotive\%}
+        \caption{Signaturen van Infrabel\%}
 \end{table}
-\subsubsection{Toelichting}
-\subsection{Railway ADT}
-\subsubsection{Toelichting}
-\subsection{Infrabel ADT}
 \subsubsection{Toelichting}
 \subsection{Gui ADT}
 \subsubsection{Toelichting}
