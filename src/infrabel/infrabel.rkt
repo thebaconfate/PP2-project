@@ -829,11 +829,6 @@
                     (define/public (fetch-reservation-graph)
                       (get-edges (send railway get-dblock-graph)))
 
-
-                    (define/public (test)
-                      (send railway get-railway-graph))
-
-                    
                     ;;;;;;;;;;;;;;;;;;;;;;;;
                     ;;     TCP handler    ;;
                     ;;;;;;;;;;;;;;;;;;;;;;;;
