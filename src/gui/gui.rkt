@@ -588,10 +588,6 @@
                            start-options)
                  (send (get-dialog 'start-dialog) show #t))
 
-               (define/public (init-railway locos dblocks switches)
-                 switches)
-               
-
                (define/public (exit)
                  (send (get-frame 'main-frame) show #f))))
 

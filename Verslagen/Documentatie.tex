@@ -398,7 +398,31 @@ interactie aanbiedt met Infrabel.
         \caption{vervolg van de signaturen van infrabel\%}
 \end{table}
 \subsubsection{Toelichting}
+$new$ maakt een nieuw gui object aan met de gegeven lengte en breedte alsook spatie tussen elementen in de UI. $add-log!$ voegt een bericht toe aan het logboek dat 
+de UI bijhoudt. $set-loco-speed!$ verandert de weergegeven snelheid van een gezochte locomotief met de gegeven snelheid. 
+$set-dblock-occupied!$ vraagt de ID van een detectieblok en de ID van een locomotief om bezetting van de detectieblok te veranderen op de UI.
+$free!$ zet de bezetting van de meegegeven detectieblok ID naar "Vacant". $reserve-dblock!$ verwacht de ID van een detectieblok en de ID van een locomotief om 
+de reservatiestatus van de detectieblok op de UI te veranderen naar de ID van de locomotief. $reserve-switch!$ doet op dezelfde manier hetzelfde voor de wissels. $free-dblock!$ en $free-switch!$ werken op dezelfde
+manier als $free!$ maar voor de reservatiestatus in plaats van de bezetting. Het zet respectievelijk de reservatiestatus naar "Vacant" op de UI.
+$set-switch-position!$ voor de gegeven wissel ID en nieuwe wisselstand, verandert de huidige stand van de wissel naar de nieuwe wisselstand. 
+$halt$ zet de snelheid van de gezochte locomotief naar 0. Wanneer een locomotief zijn eindbestemming bereikt heeft moet $set-to-not-set$ gebruikt worden. Het enige 
+nodige argument is de ID van de locomotief die de eindbestemming bereikt heeft. 
+$set-route!$ zal analoog aan de andere methoden de route die op de UI staat van de gegeven locomotief ID. Nu komen de iets
+complexere methoden. $add-locomotive!$ voegt een locomotief toe aan de UI. Het verwacht als eerste
+de ID van een locomotief dan de snelheid van de locomotief, een procedure om de snelheid te veranderen, de richting, 
+een procedure om de richting te veranderen van de locomotief, de status van de manuele modus, de procedure om de manuele status te veranderen, de locatie (detectieblok), de eindbestemming en een procedure om de eindbestemming te wijzigen. 
+Dit is allemaal zodat de sliders en knoppen die dienen om met de locomotief te interageren de juiste methoden oproepen. 
+Om een locomotief van de UI te verwijderen is het veel simpeler: We roepen $remove-locomotive!$ op met de ID van de locomotief
+die we willen verwijderen. $draw-dblock-info!$ verwacht de ID van een detectieblok, een string met wat de bezetting is en een string met wat de reservatiestatus is. 
+$draw-switches-info$ doet hetzelfde maar neemt in plaats van 2 strings de wisselstand als een integer, de reservatiestatus als een symbool en een procedure om de stand van de wissels te veranderen.
+$init-tab-3$ verwacht een procedure om een locomotief toe te voegen waarvan het alle argumenten symbolen zijn. Het eerste is de ID van de locomotief dan de ID van de vorige locatie (detectieblok) en als 
+laatste de ID van de huidige locatie (detectiblok). Ten tweede verwacht het een procedure om locomotieven
+te verwijderen. Hiervan moet het eerste argument de ID zijn van de locomotief. $init-tab-1$ Initialiseert 
+de eerste tabblad. De meegegeven procedure moet een procedure zijn om de applicatie te sluiten. $init$ maakt het frame aan en start
+de UI. $start-gui$ start de UI op met de startmethoden van het programma. Dit zal dan meegegeven worden in een lijst van strings met de mogelijke startup opties.
+$exit$ sluit de UI af. 
 \subsection{NMBS ADT}
+
 \subsubsection{Toelichting}
 \section{Afhankelijkheids diagram}
 \section{Beschrijving van API tussen infrabel- en NMBS-component}
