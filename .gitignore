@@ -1,9 +1,6 @@
 *.ss~
 *.ss#*
 .#*.ss
-<<<<<<< Updated upstream
-
-=======
 *.synctex.gz
 *.gz
 *.tex
@@ -13,7 +10,6 @@
 *.log
 *.synctex(busy)
 *.toc
->>>>>>> Stashed changes
 *.scm~
 *.scm#*
 .#*.scm
