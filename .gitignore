@@ -1,7 +1,6 @@
 *.ss~
 *.ss#*
 .#*.ss
-*.synctex.gz
 *.gz
 *.tex
 *.aux

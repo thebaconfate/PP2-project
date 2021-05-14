@@ -11,8 +11,9 @@
 (provide nmbs%)
 
 (define nmbs% (class object%
+                (init-field hostname)
                 (define gui (new gui% [frame-width 900][frame-height 600][main-spacing 50]))
-                (define-values (in out) (tcp-connect "raspberrypi" 9000))
+                (define-values (in out) (tcp-connect hostname 9000))
                 (define railway (make-object railway%))
                 (define paths (make-hash))
                 (define update #f)
@@ -54,7 +55,7 @@
 
 
 
-                (define/public (update-dblocks-data!)
+                (define/private (update-dblocks-data!)
                   (let ((dblocks (send-and-receive in out (list 'get-list-of-dblocks))))
                     (for-each (λ (dblock+)
                                 (let ((id (first dblock+))
@@ -67,7 +68,7 @@
                               dblocks)))
                                   
 
-                (define/public (update-dblocks!)
+                (define/private (update-dblocks!)
                   (let ((dblocks '()))
                     (send railway for-each-track (λ (id track)
                                                    (when (dblock? track)
