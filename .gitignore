@@ -1,7 +1,19 @@
 *.ss~
 *.ss#*
 .#*.ss
+<<<<<<< Updated upstream
 
+=======
+*.synctex.gz
+*.gz
+*.tex
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex(busy)
+*.toc
+>>>>>>> Stashed changes
 *.scm~
 *.scm#*
 .#*.scm
