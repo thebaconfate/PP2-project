@@ -3,5 +3,5 @@
 (require "../nmbs/nmbs.rkt")
 
 
-(define nmbs (make-object nmbs% "91.178.162.60"))
+(define nmbs (make-object nmbs% "localhost"))
 (send nmbs start-nmbs)

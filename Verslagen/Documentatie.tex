@@ -4,12 +4,13 @@
 \usepackage[dutch]{babel}
 \usepackage{xcolor}
 \usepackage{array}
+\usepackage{graphicx}
 \usepackage{tabularx}
 \title{Programmeerproject 2}
 \subtitle{Documentatie fase 3}
 \definecolor{myblueish}{rgb}{0.36, 0.54, 0.66}
 \faculty{Sciences and Bio-Engineering Sciences}
-\author{Gérard Lichterttt\\
+\author{Gérard Lichtert\\
         \textcolor{blue}{gerard.Lichtert@vub.be}\\
         \textcolor{myblueish}{0557513}}
 \date{\today}
@@ -422,11 +423,189 @@ de eerste tabblad. De meegegeven procedure moet een procedure zijn om de applica
 de UI. $start-gui$ start de UI op met de startmethoden van het programma. Dit zal dan meegegeven worden in een lijst van strings met de mogelijke startup opties.
 $exit$ sluit de UI af. 
 \subsection{NMBS ADT}
-
+Het NMBS ADT is de client die zich moet verbinden met de server (Infrabel). 
+Het het berekend het pad bij automatische trajectbeheer en behoudt de informatie over het spoornetwerk
+up to date. Dit doet het NMBS ADT doormidden van TCP communicatie met Infrabel waar het overgrote deel van
+de data opgevraagd wordt. 
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{2.9cm}|}{\textbf{Naam}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{4cm}|}{\textbf{Signatuur}} 
+                   & \multicolumn{1}{>{\centering\arraybackslash}p{6.1cm}|}{\textbf{Beschrijving}}\\
+                \hline
+                new & (string $\rightarrow$ nmbs) & Maakt een NMBS object aan. \\
+                \hline
+                start-nmbs & (/ $\rightarrow$ /) & Initialiseert het nmbs object en start de UI om ermee te kunnen interageren. \\
+                \hline
+        \end{tabular}
+        \caption{vervolg van de signaturen van nmbs\%}
+\end{table}   
 \subsubsection{Toelichting}
+$new$ maakt een nieuw nmbs object aan om er mee te interageren. Het probeert ook direct 
+een verbinding te maken met het meegegeven IP adres. Dit moet dus het IP adres zijn van de 
+server of infrabel. $start-nmbs$ start het object op en bij gevolg ook de UI. De gebruiker zal
+dan gevraagd worden op welke modus men de simulator of hardware wilt starten. Hierna kan men verder 
+interageren met de UI en het spoornetwerk.
+\pagebreak
 \section{Afhankelijkheids diagram}
+\begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth]{Images/software-architecture PP2.png}
+        \caption{Afhankelijkheids diagram}
+\end{figure}
 \section{Beschrijving van API tussen infrabel- en NMBS-component}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{6.5cm}|p{6.5cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{6.5cm}|}{\textbf{NMBS naar Infrabel}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{6.5cm}|}{\textbf{Infrabel terug naar NMBS}}\\
+                \hline
+                Vraagt informatie over de spoor objecten en locomotief objecten & Geeft lijsten van informatie over de spoor objeten en locomotief objecten terug.\\
+                \hline
+                Vraagt om de verbinding te sluiten & /\\
+                \hline
+                Vraagt om de stand van een wissel te veranderen & Stuurt de nieuwe stand van de wissel terug\\
+                \hline
+                Vraagt om de eindbestemming te zetten en het automatisch trajectbeheer in gang te steken & Vraagt een herberekening indien dit aangevraagd is terwijl de locomotief niet detecteerbaar is.\\
+                \hline
+                Vraagt om een locomotief to te voegen aan het spoornetwerk. & Geeft de gegevens van de toegevoegde locomotief terug om op de UI te kunnen zetten.\\
+                \hline
+                Vraagt om de richting van een locomotief te veranderen & Geeft de nieuwe richting terug. \\
+                \hline
+        \end{tabular}
+\end{table}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{6.5cm}|p{6.5cm}|}   
+                \hline
+                Vraagt om de snelheid van een locomotief te wijzigen. & Geeft alleen de nieuwe snelheid terug indien deze nul is. \\
+                \hline
+                Vraagt om de het reservatieprotocol te wijzigen van een locomotief & /\\
+                \hline
+                Vraagt om een locomotief van het spoornetwerk te verwijderen & /\\
+                \hline
+                Vraagt om de simulator of hardware op een gegeven manier te starten & /\\
+                \hline
+       \end{tabular}
+        \caption{Van NMBS naar Infrabel en terug}
+\end{table}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{6.5cm}|p{6.5cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{6.5cm}|}{\textbf{Infrabel naar NMBS}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{6.5cm}|}{\textbf{NMBS terug naar Infrabel}}\\
+                \hline
+                Stuurt logboek evenementen (verandering snelheid, richting etc.) & / \\
+                \hline
+                Stuurt berekende routes & /\\
+                \hline
+                Stuurt een lijst van de bezette spoorsegmenten & /\\
+                \hline
+                Stuurt een lijst van de gereserveerde spoorsegmenten & /\\
+                \hline
+        \end{tabular}
+\end{table}
 \section{Planning}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2cm}|p{11cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{2cm}|}{\textbf{Week}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{11cm}|}{\textbf{Gepland}}\\
+                \hline
+                5 & 18/10 Indienen voorstudie. \\
+                \hline
+                6 & Stuurt berekende routes \& Feedback afwachten, ADT detectieblok en switch implementeren.\\
+                \hline
+                7 & ADT locomotive \& track implementeren.\\
+                \hline
+                8 & ADT railway \& beginnen aan ADT infrabel.\\
+                \hline
+                9 & ADT infrabel \& NMBS component maken.\\
+                \hline
+                10 & Laatste aanpassingen NMBS.\\
+                \hline
+                11 & 18/10 Indienen fase 1: code en documentatie.\\
+                \hline
+                12 & Feedback afwachten.\\
+                \hline
+                13 \& 14 & Implementeren van grafen voor het automatisch trajectbeheer.\\
+                \hline
+                15 \& 16 & Automatisch trajectbeheer implementeren.\\
+                \hline
+                17 & Mogelijk maken dat GUI het traject kan tonen aan de hand van het trajectbeheer.\\
+                \hline
+                18 \& 19 & Botsingen voorkomen implementeren.\\
+                \hline
+                20 & GUI aanpassingen voor mogelijk extra componenten.\\
+                \hline
+                21 & Feedback vragen.\\
+                \hline
+                22 + 23 + 24 + 25 & Aanpassingen doorvoeren aan de hand van de feedback.\\
+                \hline
+                26 & 14/03 Indienen fase 2: code en documentatie.\\
+                \hline
+                27 & Feedback afwachten.\\
+                \hline
+        \end{tabular}
+\end{table}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2cm}|p{11cm}|}
+                \hline
+                28 + 29 + 30 + 31 & RPI.\\
+                \hline
+                32 & GUI aanpassen indien nodig.\\
+                \hline
+                33 + 34 + 35 & Hardware film maken/aanpassingen doorvoeren indien nodig.\\
+                \hline
+                36 & 23/05 Indienen fase 3: code en documentatie.\\
+                \hline
+        \end{tabular}
+        \caption{Planning}
+\end{table}
 \section{Logboek}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2cm}|p{11cm}|}
+                \hline
+                \multicolumn{1}{|>{\centering\arraybackslash}p{2cm}|}{\textbf{Week}} 
+                & \multicolumn{1}{>{\centering\arraybackslash}p{11cm}|}{\textbf{Gepland}}\\
+                \hline
+                5 & 18/10 Ingediend voorstudie.\\
+                \hline
+                7 & ADT locomotive \& track implementeren.\\
+                \hline
+                8 & ADT railway \& beginnen aan ADT infrabel.\\
+                \hline
+                9 & ADT infrabel \& NMBS component maken.\\
+                \hline
+                11 & Code en documentatie ingeleverd (fase 1).\\
+                \hline
+                24 & Aanpassingen detectieblok ADT, Track ADT, switch ADT.\\
+                \hline
+                25 & Aanpassingen Locomotive ADT, Infrabel ADT.\\
+                \hline
+                26 & Aanpassingen NMBS ADT, Implementeren reservatiesysteem en deel van TCP. Code en documentatie ingeleverd (fase 2).\\
+                \hline
+                29 & Powerpoint gemaakt en projectverdediging.\\
+                \hline
+                30 & Aanpassingen reservatiesysteem.\\
+                \hline
+                31 \& 32 & Aanpassingen reservatiesysteem, GUI en trajectbeheer\\
+                \hline
+                33 & Aanpassingen automatisch trajectbeheer en testen met RPI.\\
+                \hline
+                34 & Verslagen geschreven. \\
+                \hline
+                36 & code en documentatie ingeleverd (fase 3). \\
+                \hline
+        \end{tabular}
+        \caption{Logboek}
+\end{table}
 \end{document}
  

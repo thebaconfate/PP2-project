@@ -55,7 +55,7 @@
 
 
 
-                (define/public (update-dblocks-data!)
+                (define/private (update-dblocks-data!)
                   (let ((dblocks (send-and-receive in out (list 'get-list-of-dblocks))))
                     (for-each (λ (dblock+)
                                 (let ((id (first dblock+))
@@ -68,7 +68,7 @@
                               dblocks)))
                                   
 
-                (define/public (update-dblocks!)
+                (define/private (update-dblocks!)
                   (let ((dblocks '()))
                     (send railway for-each-track (λ (id track)
                                                    (when (dblock? track)
