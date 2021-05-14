@@ -1,7 +1,14 @@
 *.ss~
 *.ss#*
 .#*.ss
-
+*.gz
+*.tex
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex(busy)
+*.toc
 *.scm~
 *.scm#*
 .#*.scm
