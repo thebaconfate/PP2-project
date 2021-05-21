@@ -86,6 +86,7 @@ Dit kan ook vervangen worden door (make-object track\% \textless \space argument
 spoorsegmenten op te vragen. $set-links!$ wijzigt de verbonden spoorsegmenten. $links-map$ voert een procedure uit op de vector-elementen. 
 $reserved?$ geeft of de ID van het locomotief terug die het spoorsegment gereserveerd heeft of false. $cancel-reservation!$ zet de reservatiestand naar false. 
 $nr-of-links$ geeft het aantal verbindingen terug. Classen zoals switch en detectieblokken zullen de methoden erven van deze classe. 
+\pagebreak
 \subsection{Switch ADT}
 Het switch ADT erft de methoden van het Track ADT. Het zal dus bovenop de onderstaande
 methoden ook de methoden van het Track ADT bevatten. Het switch ADT houdt de 
@@ -112,6 +113,7 @@ het staat toe om de stand te veranderen. \\
                 van de wissel. \\
                 \hline
                 switch? & (any $\rightarrow$ boolean) & Test of iets tot de switch classe behoort. \\
+                \hline
         \end{tabular}
         \caption{Signaturen van switch\%}
 \end{table}
@@ -184,10 +186,41 @@ Het pad en eindbestemming wordt gebruikt voor het automatisch trajectbeheer.
                 \hline
                 get-loco-id & (/ $\rightarrow$ symbol) & Geeft de ID van de locomotief terug. \\
                 \hline
-                locomotive? & (/ $\rightarrow$ boolean) & Test of iets tot de locomotief classe behoort.\\
+                get-speed & (/ $\rightarrow$ integer) & Geeft de huidige snelheid terug. \\
+                \hline
+                get-previous-location & (/ $\rightarrow$ symbol) & Geeft de vorige locatie terug.\\
+                \hline
+                set-speed! & (integer $\rightarrow$ /) & Verandert de snelheid naar de meegegeven waarde.\\
+                \hline
+                get-direction & (/ $\rightarrow$ symbol) & Geeft de huidige richting terug.\\
+                \hline
+                set-direction! & (symbol $\rightarrow$ integer) & Verandert de richting naar de meegegeven richting en geeft de snelheid terug. De teruggegeven snelheid zal negatief zijn indien de locomotief achteruit gaat.\\
                 \hline
         \end{tabular}
         \caption{Signaturen van locomotive\%}
+\end{table}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
+                \hline
+                get-destination & (/ $\rightarrow$ symbol $\cup$ false) & Geeft de huidige eindbestemming terug of false indien er geen gezet is.\\
+                \hline
+                set-destination! & (symbol $\cup$ false $\rightarrow$ /) & Verandert de eindbestemming. Indien er geen nodig is moet dit false zijn. \\
+                \hline
+                get-location & (/ $\rightarrow$ symbol) & Geeft de huidige locatie terug.\\
+                \hline
+                set-location! & (symbol $\rightarrow$ /) & Verandert de huidige locatie.\\
+                \hline
+                set-previous-location! & (symbol $\rightarrow$ /) & Verandert de vorige locatie.\\
+                \hline
+                get-path & (/ $\rightarrow$ list $\cup$ false) & Geeft het pad terug in lijstvorm van ID's van spoorsegmenten de de locomotief moet afleggen.\\
+                \hline
+                set-path! & (list $\rightarrow$ /) & Zet het pad vast.\\
+                \hline
+                locomotive? & (/ $\rightarrow$ boolean) & Test of iets tot de locomotief classe behoort.\\
+                \hline
+        \end{tabular}
+        \caption{Vervolg van de signaturen van locomotive\%}
 \end{table}
 \subsubsection{Toelichting}
 $new$ maakt een nieuw locomotief object aan. Het neemt als eerste de ID van de locomotief, de richting van de locomotief, de huidige locatie en de vorige locatie. 
@@ -197,7 +230,12 @@ locomotief geen spoorsegmenten gereserveerd heeft.
 $manual-override$ zal dienen om de status van de manier van het reservatiesysteem te veranderen. Wanneer de status $true$ is zal het de bezetting van een detectieblok negeren, 
 dit zal vooral dienen om naar dichtbijzijnde detectieblokken te kunnen navigeren zonder rekening te houden met locomotieven die te dicht in de buurt zijn. De enige argumenten
 die dus gebruikt kunnen worden hiervoor zijn dus ook de booleans. 
-$manual?$ geeft de status van de manuele modus terug. Als laatste $get-loco-id$ geeft de ID terug van de locomotief. 
+$manual?$ geeft de status van de manuele modus terug. $get-loco-id$ geeft de ID terug van de locomotief. $get-speed$ geeft de snelheid (in absolute waarde) terug terwijl 
+$set-speed!$ juist de snelheid aanpast. Let wel op dat dit positieve waarden verwacht. $get-previous-location$ geeft de vorige locatie terug en $set-previous-location!$ plaats
+dit terug aan. Het is wel niet de bedoeling dat men dit gebruikt aangezien $set-location!$ de opgeslaagde locatie als vorige locatie zet en de nieuwe locatie als huidige locatie
+onthoudt. $get-location$ dient weer om de huidige locatie op te vragen. $get-direction$ en $set-direction$ dienen analoog zoals de rest om de richting op te vragen en 
+het te wijzigen. $get-destination$ en $set-destination!$ werken op dezelfde manier maar indien er geen eindbestemming nodig is gebruiken we $false$. $get-path$ geeft het pad 
+terug en $set-path!$ zal het pad opslaan. 
 \subsection{Railway ADT}
 Het railway ADT brengt de de spoor gerelateerde ADT's zoals het track ADT, switch ADT, het detectieblok ADT en het locomotief ADT samen. 
 Zo houdt he railway ADT het volledig spoornetwerk samen. Het netwerk zelf wordt bewaard in een graaf. Het programma maakt hierdoor gebruik van de $graph$ library. 
@@ -230,25 +268,12 @@ aanspreken van een track ADT en zijn subclassen.
                 \hline
                 remove-track! & (symbol $\rightarrow$ /) & Verwijdert het gezochte object uit het spoornetwerk. \\
                 \hline
-                update-track! & (symbol (track $\cup$ dblock $\cup$ switch $\rightarrow$ any) $\rightarrow$ /) & Voert de meegegeven procedure uit op het gezochte object. \\
+                for-each-track & ((symbol, track $\cup$ dblock $\cup$ switch $\rightarrow$ any) $\rightarrow$ any) & Voert een procedure uit op alle spoorsegmenten \\
                 \hline
-                for-each-track & ((track $\cup$ dblock $\cup$ switch $\rightarrow$ any) $\rightarrow$ any) & Voert een procedure uit op alle spoorsegmenten \\
-                \hline
-                for-each-link &  ((track $\cup$ dblock $\cup$ switch $\rightarrow$ any), symbol $\rightarrow$ vector) & Voert een procedure uit op de aanliggende spoorsegmenten van het gezochte spoorsegment.\\   
+                for-each-link &  ((symbol, track $\cup$ dblock $\cup$ switch $\rightarrow$ any), symbol $\rightarrow$ vector) & Voert een procedure uit op de aanliggende spoorsegmenten van het gezochte spoorsegment.\\   
                 \hline
                 get-railway-graph & (/ $\rightarrow$ graph) & Geeft de graaf met het spoornetwerk terug.\\
                 \hline
-        \end{tabular}
-        \caption{Signaturen van railway\%}
-\end{table}
-\begin{table}[h!]
-        \centering
-        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
-                \hline
-                \multicolumn{1}{|>{\centering\arraybackslash}p{2.9cm}|}{\textbf{Naam}} 
-                & \multicolumn{1}{>{\centering\arraybackslash}p{4cm}|}{\textbf{Signatuur}} 
-                   & \multicolumn{1}{>{\centering\arraybackslash}p{6.1cm}|}{\textbf{Beschrijving}}\\
-                \hline 
                 get-dblock-graph & (/ $\rightarrow$ graph) & Geeft de graaf met alleen detectieblokken terug. \\
                 \hline
                 make-locomotive & (symbol, symbol, symbol, symbol $\rightarrow$ locomotive) & Maakt een locomotief object aan aan de hand van de gegeven
@@ -258,22 +283,19 @@ aanspreken van een track ADT en zijn subclassen.
                 \hline
                 remove-locomotive! & (symbol $\rightarrow$ /) & Verwijdert het gezochte locomotief object van het spoornetwerk. \\
                 \hline
-                update-locomotive! & (locomotive $\rightarrow$ /) & Verandert gegevens van een locomotief door het te vervangen met een nieuwe. \\
-                \hline
                 get-locomotive & (symbol $\rightarrow$ locomotive $\cup$ false) & Geeft het gezochte locomotief object terug of false indien deze niet bestaat. \\
                 \hline
-                for-each-loco & ((locomotive $\rightarrow$ any) $\rightarrow$ any) & Voert een procedure uit op alle locomotief objecten. \\
+                for-each-loco & ((symbol, locomotive $\rightarrow$ any) $\rightarrow$ any) & Voert een procedure uit op alle locomotief objecten. \\
                 \hline
                 railway? & (any $\rightarrow$ boolean) & Geeft terug of iets tot de railway classe behoort. \\
                 \hline
         \end{tabular}
-        \caption{Vervolg van de signaturen van railway\%}
+        \caption{Signaturen van railway\%}
 \end{table}
 \subsubsection{Toelichting}
 Niet alle methoden zullen besproken worden omdat sommige methoden zoals $make-switch$, $make-dblock$, $make-track$ en $make-locomotive$
 Analoog zijn aan de methode $new$ van het respectievelijke object dat het aanmaakt. De $add-track!$ en $add-locomotive!$ voegen beiden respectievelijk hun spoor objecten of locomotief objecten
-toe aan het spoornetwerk. $remove-track!$ en $remove-locomotive!$ verwijderen gezochte objecten van het spoornetwerk terwijl $update-track!$ en $update-locomotive!$ de interne opslag van de objecten aanpassen. 
-Let wel op dat $update-track!$ een procedure vraagt bij de oproep en $update-locomotive$ een nieuw locomotief object vraagt die het oude vervangt. $get-track$ en $get-locomotive$ geven respectievelijk het gezochte spoor object terug of het locomotief object. Wanneer het gezochte object niet bestaat zal het false teruggeven.
+toe aan het spoornetwerk. $remove-track!$ en $remove-locomotive!$ verwijderen gezochte objecten van het spoornetwerk. $get-track$ en $get-locomotive$ geven respectievelijk het gezochte spoor object terug of het locomotief object. Wanneer het gezochte object niet bestaat zal het false teruggeven.
 Dan hebben we nog $get-list-of-tracks$ dat een hash->list teruggeeft van het spoornetwerk (alleen de spoor objecten, dus geen locomotieven). $for-each-track$ mapt een procedure uit op alle spoor objecten. $for-each-link$ voert dan een procedure uit op alle aanliggende 
 spoorobjecten van het gezochte spoorsegment. $get-railway-graph$ geeft de graaf terug van het spoornetwerk. Dit is belangrijk zodat clients kunnen 'syncen' met Infrabel. Bovendien helpt $get-dblock-graph$ hier ook mee want 
 dit geeft dan de graaf terug met alleen maar detectieblokken voor het trajectbeheer. Ten laatste hebben we nog $for-each-loco$ die ene procedure uitvoert op elk bestaande locomotief object.
@@ -309,6 +331,13 @@ voor clients (NMBS) die op hun beurt ook berekeningen uitvoeren en vervolgens me
                 \hline
                 get-list-of-locos & (/ $\rightarrow$ list) & Geeft een lijst van de ID's van de locomotieven die zich op het spoornetwerk bevinden.\\
                 \hline
+        \end{tabular}
+        \caption{Signaturen van infrabel\%}
+\end{table}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
+                \hline
                 set-switch-position! & (symbol, integer $\rightarrow$ /) & Verandert de stand van een wissel.\\
                 \hline
                 set-manual-mode! & (symbol, boolean $\rightarrow$ /) & Verandert de status van het reservatieprotocol van een locomotief.\\
@@ -320,7 +349,7 @@ voor clients (NMBS) die op hun beurt ook berekeningen uitvoeren en vervolgens me
                 infrabel? & (any $\rightarrow$ boolean) & Test of iets tot de infrabel classe hoort.\\
                 \hline
         \end{tabular}
-        \caption{Signaturen van infrabel\%}
+        \caption{Vervolg van de signaturen van infrabel\%}
 \end{table}
 \subsubsection{Toelichting}
 $new$ maakt een nieuw infrabel object aan. Het verwacht een boolean om de initatie ervan op de simulator of op de hardware te doen. $add-loco$ verwacht een ID, de ID van het huidige detectieblok en de ID van het vorige detectieblok
@@ -351,6 +380,13 @@ interactie aanbiedt met Infrabel.
                 \hline
                 set-dblock-occupied! & (symbol, symbol $\rightarrow$ /) & Verandert de bezetheid van een detectieblok naar bezet op de UI.\\ 
                 \hline
+        \end{tabular}
+        \caption{Signaturen van gui\%}
+\end{table}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
+                \hline
                 free! & (symbol $\rightarrow$ /)  & Verandert de bezetheid van een detectieblok naar vrij op de UI.\\
                 \hline
                 reserve-dblock! & (symbol, symbol $\rightarrow$ /) & Verandert de reservatiestatus van een detectieblok naar het meegegeven ID van een locomotief op de UI.\\
@@ -373,13 +409,6 @@ interactie aanbiedt met Infrabel.
                 boolean, (boolean $\rightarrow$ /), symbol, symbol $\cup$ false, (symbol $\cup$ false) $\rightarrow$ /) & Voegt een locomotief toe aan de UI en biedt interactie toe aan de hand van sliders en knoppen.\\
                 \hline
                 remove-locomotive! & (symbol $\rightarrow$ /) & Verwijdert een locomotief van de UI.\\
-                \hline
-        \end{tabular}
-        \caption{Signaturen van railway\%}
-\end{table}
-\begin{table}[h!]
-        \centering
-        \begin{tabular}{|p{2.9cm}|p{4cm}|p{6.1cm}|}
                 \hline
                 draw-dblock-info! & (symbol, string, string $\rightarrow$ /) & Tekent \& initaliseert informatie over een detectieblok op het scherm. \\
                 \hline
@@ -440,21 +469,22 @@ de data opgevraagd wordt.
                 start-nmbs & (/ $\rightarrow$ /) & Initialiseert het nmbs object en start de UI om ermee te kunnen interageren. \\
                 \hline
         \end{tabular}
-        \caption{vervolg van de signaturen van nmbs\%}
+        \caption{Signaturen van nmbs\%}
 \end{table}   
+\pagebreak
 \subsubsection{Toelichting}
 $new$ maakt een nieuw nmbs object aan om er mee te interageren. Het probeert ook direct 
 een verbinding te maken met het meegegeven IP adres. Dit moet dus het IP adres zijn van de 
 server of infrabel. $start-nmbs$ start het object op en bij gevolg ook de UI. De gebruiker zal
 dan gevraagd worden op welke modus men de simulator of hardware wilt starten. Hierna kan men verder 
 interageren met de UI en het spoornetwerk.
-\pagebreak
 \section{Afhankelijkheids diagram}
 \begin{figure}[h]
         \centering
         \includegraphics[width=\textwidth]{Images/software-architecture PP2.png}
         \caption{Afhankelijkheids diagram}
 \end{figure}
+\pagebreak
 \section{Beschrijving van API tussen infrabel- en NMBS-component}
 \begin{table}[h!]
         \centering
@@ -474,12 +504,6 @@ interageren met de UI en het spoornetwerk.
                 Vraagt om een locomotief to te voegen aan het spoornetwerk. & Geeft de gegevens van de toegevoegde locomotief terug om op de UI te kunnen zetten.\\
                 \hline
                 Vraagt om de richting van een locomotief te veranderen & Geeft de nieuwe richting terug. \\
-                \hline
-        \end{tabular}
-\end{table}
-\begin{table}[h!]
-        \centering
-        \begin{tabular}{|p{6.5cm}|p{6.5cm}|}   
                 \hline
                 Vraagt om de snelheid van een locomotief te wijzigen. & Geeft alleen de nieuwe snelheid terug indien deze nul is. \\
                 \hline
@@ -523,6 +547,13 @@ interageren met de UI en het spoornetwerk.
                 \hline
                 7 & ADT locomotive \& track implementeren.\\
                 \hline
+        \end{tabular}
+        \caption{Overzicht van de planning\%}
+\end{table}
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2cm}|p{11cm}|}
+                \hline
                 8 & ADT railway \& beginnen aan ADT infrabel.\\
                 \hline
                 9 & ADT infrabel \& NMBS component maken.\\
@@ -551,12 +582,6 @@ interageren met de UI en het spoornetwerk.
                 \hline
                 27 & Feedback afwachten.\\
                 \hline
-        \end{tabular}
-\end{table}
-\begin{table}[h!]
-        \centering
-        \begin{tabular}{|p{2cm}|p{11cm}|}
-                \hline
                 28 + 29 + 30 + 31 & RPI.\\
                 \hline
                 32 & GUI aanpassen indien nodig.\\
@@ -566,7 +591,7 @@ interageren met de UI en het spoornetwerk.
                 36 & 23/05 Indienen fase 3: code en documentatie.\\
                 \hline
         \end{tabular}
-        \caption{Planning}
+        \caption{Vervolg van het overzicht van de planning}
 \end{table}
 \section{Logboek}
 \begin{table}[h!]

@@ -8,7 +8,7 @@
 (require "../railway_objects/segment_checks.rkt")
 (require "../tcp/help-procs.rkt")
 
-(provide nmbs%)
+(provide nmbs% nmbs?)
 
 (define nmbs% (class object%
                 (init-field hostname)
@@ -124,10 +124,11 @@
                   (send gui set-loco-speed! id spd))
 
                 (define/private (set-dblock-occupied! dblock-id loco-id)
-                  (send (send railway get-track dblock-id) occupy! loco-id)
-                  (send (send railway get-locomotive loco-id) set-location! dblock-id)
-                  (send gui set-dblock-occupied! dblock-id loco-id))
-
+                  (when (send railway get-locomotive loco-id)
+                    (send (send railway get-track dblock-id) occupy! loco-id)
+                    (send (send railway get-locomotive loco-id) set-location! dblock-id)
+                    (send gui set-dblock-occupied! dblock-id loco-id)))
+                
                 (define/private (free! dblock-id)
                   (send gui free! dblock-id))
 
@@ -330,3 +331,5 @@
                                                                                          'setup-loop-and-switches))
                                                                                   (sync-all-with-infrabel))))))
                   (thread main-loop))))
+(define (nmbs? x)
+  (is-a? x nmbs%))

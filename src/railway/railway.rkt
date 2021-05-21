@@ -64,19 +64,6 @@
                      (hash-remove! track-segments track-id)
                      (remove-vertex! railway-graph track-id))
 
-                   ;; updates a track in both datastructures
-                   (define/public (update-track! track-id proc)
-                     (hash-set! track-segments track-id)
-                     (let ((track-object (get-track track-id)))
-                       (unless (= (length (remove-duplicates
-                                           (append (vector->list (send track-object get-tracks))
-                                                   (get-neighbors railway-graph track-id))))
-                                  (length (get-neighbors railway-graph track-id)))
-                         (remove-vertex! railway-graph track-id)
-                         (add-track-to-railway! track-id track-object))))
-                         
-                                         
-                       
                    ;; procedure to use a procedure on each track-segment
                    (define/public (for-each-track proc)
                      (hash-for-each track-segments proc))
@@ -104,10 +91,6 @@
                    ;; removes a locomotive from the hashmap
                    (define/public (remove-locomotive! locomotive-id)
                      (hash-remove! locomotives locomotive-id))
-
-                   ;; updates a locomotive in the hashmap
-                   (define/public (update-locomotive! locomotive-object)
-                     (add-locomotive! locomotive-object))
 
                    ;; fetches a locomotive object from the hashmap
                    (define/public (get-locomotive locomotive-id)

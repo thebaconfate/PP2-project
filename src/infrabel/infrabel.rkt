@@ -91,7 +91,7 @@
 
                     ;; cancels reservations for a given list of tracks
                     (define/private (cancel-reservations! list-of-tracks)
-                      (unless (or (null? list-of-tracks) (not list-of-tracks))
+                      (unless (or (null? list-of-tracks)(not list-of-tracks))
                         (send-message out (list 'cancel-tracks list-of-tracks))
                         (for-each (λ (track-id)
                                     (send (send railway get-track track-id) cancel-reservation!)) list-of-tracks)))
