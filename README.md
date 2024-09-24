@@ -1,7 +1,7 @@
 # Programmeerproject 2
  
  Author: Gérard Lichtert
- 2nd Bachelor Computer science student @ Free university Brussels
+ 2nd Bachelor Computer science student @ Vrije Universiteit Brussel
  made during academic year 2020-2021
 
 
